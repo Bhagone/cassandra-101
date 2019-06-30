@@ -1,0 +1,72 @@
+CREATE KEYSPACE Student  
+WITH replication = {'class':'SimpleStrategy', 'replication_factor' : 3};   
+
+==================================================================================
+describe keyspaces
+==================================================================================
+ALTER KEYSPACE Student
+WITH replication = {'class':'NetworkTopologyStrategy', 'replication_factor' : 3};
+==================================================================================
+ALTER KEYSPACE Student
+WITH replication = {'class':'NetworkTopologyStrategy', 'DC1' : 1};
+ 
+==================================================================================
+ALTER KEYSPACE Student  
+WITH replication = {'class':'SimpleStrategy', 'replication_factor' : 3};   
+========================================================================================
+CREATE TABLE Student_Info(  
+   ID  int PRIMARY KEY,
+   Name varchar,  
+   Age int,  
+   Mobile varint,  
+   Year int,
+   Address varchar
+   );   
+
+==========================================================================================================
+ALTER Table Student_Info  Drop Mobile;
+======================================================================================================
+ALTER Table Student_Info  Drop Year;
+==================================================================================================
+ALTER Table Student_Info Add Year int;
+===========================================================================================================
+CREATE INDEX Sname ON Student_Info (Name);   
+
+======================================================================================================
+INSERT INTO Student_Info (sid, Name, Age,Year,Address ) VALUES ( 1, 'Rahul',23,2072,'Bagar');
+INSERT INTO Student_Info (id, Name, Age,Year,Address ) VALUES ( 2, 'Shyam',22,2072,'Madhyampath');
+INSERT INTO Student_Info (id, Name, Age,Year,Address ) VALUES ( 3, 'Hari',23,2073,'New Road');
+INSERT INTO Student_Info (id, Name, Age,Year,Address ) VALUES ( 4, 'Dinesh',22,2073,'Bagar');
+INSERT INTO Student_Info (id, Name, Age,Year,Address ) VALUES ( 5, 'Shyam',23,2073,'Simpani');
+INSERT INTO Student_Info (id, Name, Age,Year,Address ) VALUES ( 6, 'Mahesh',24,2071,'Lakeside');
+INSERT INTO Student_Info (id, Name, Age,Year,Address ) VALUES ( 7, 'Biplav',23,2074,'Madhyampath');
+INSERT INTO Student_Info (id, Name, Age,Year,Address ) VALUES ( 8, 'Bhimesh',22,2073,'Madhyampath');
+
+================================================================================================
+alter table Student_info Add Hobby set<text>;
+update Student_Info 
+Set Hobby=Hobby +{'Football','Watching Movie','Cycling'}
+where sid=5;
+======================================================================================
+INSERT INTO Student_Info (sid, Name, Age,Hobby,Subjects,Address ) VALUES ( 7, 'Biplav',23,{'Cricket','Chess'},['CNN','IM'],'Madhyampath');
+INSERT INTO Student_Info (sid, Name, Age,Hobby,Subjects,Address ) VALUES ( 8, 'Bhimesh',22,{'Cricket','Ludo'},['RNN','DL'],'Bagar');
+=================================================================================================================================================
+update Student_Info Set Hobby=Hobby +{'Football'} where sid=7;
+===============================================================================
+update Student_Info Set Hobby=Hobby - {'Watching Movie'} where sid=5;
+=====================================================================================
+select Hobby, Name from Student_Info where Hobby contains 'Cricket' ;
+==================================================================================
+select Subjects, Name from Student_Info where Subject contains 'IM' ;
+==================================================================================
+update Student_Info Set Hobby={} where sid=5;
+or
+Delete Hobby from Student_Info where sid=5;
+===================================================================
+Delete Hobby['Big Data'] from Student_Info where sid=10;
+===============================================================
+update Student_Info Set Routine={'FirstPeriod':'Big Data','SecondPeriod':'Cloud'} where sid=5;
+=======================================================================================================
+update Student_Info Set Routine=Routine +{'ThirdPeriod':'Project'} where sid=5;
+==================================================================================================
+copy Student_Info(sid,Name,Age,Hobby,Subjects,Address,year) to 'd:\StudentInfo.csv'

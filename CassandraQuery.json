@@ -76,4 +76,6 @@ INSERT INTO Student_info (id, Name, Age, Year, address) VALUES (9, 'Prakash', 24
 UPDATE Student_info set year=2073 where id=5;
 INSERT INTO Student_info (id, Name, Age, Year, address) VALUES (10, 'Padam', 24, 2073, 'New Road');
 Apply Batch;
-
+==================================================================================================
+copy Student_info(id, Name, Age) to 'student.csv';
+==================================================================================================
